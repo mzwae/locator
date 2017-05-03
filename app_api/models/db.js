@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var dbURI = 'mongodb://localhost/locator';
+var dbURI = 'mongodb://localhost/LocatoR';
 
 if (process.env.NODE_ENV === 'production') {
   dbURI = process.env.MONGOLAB_URI;
