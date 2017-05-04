@@ -1,32 +1,44 @@
-/*GET 'home' page*/
+var request = require('request');
+var apiOptions = {
+  server: "http://localhost:3000"
+};
+if (process.env.NODE_ENV === 'production') {
+  apiOptions.server = "https://ancient-reaches-88437.herokuapp.com/";
+}
 
-module.exports.homelist = function (req, res) {
+var renderHomepage = function (req, res, responseBody) {
   res.render('locations-list', {
     title: 'LocatoR - find a place to work with fast wifi',
     pageHeader: {
       title: 'LocatoR',
       strapline: 'Find places to work with fast wifi near you!',
-      sidebar: "Looking for wifi and a seat? LocatoR helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let LocatoR help you find the place you're looking for.",
-      locations: [{
-        name: 'Starcups',
-        address: '125 High Street, Reading, RG6 1PS',
-        rating: 3,
-        facilities: ['Hot drinks', 'Food', 'Premium wifi'],
-        distance: '100m'
-}, {
-        name: 'Cafe Hero',
-        address: '125 High Street, Reading, RG6 1PS',
-        rating: 4,
-        facilities: ['Hot drinks', 'Food', 'Premium wifi'],
-        distance: '200m'
-}, {
-        name: 'Burger Queen',
-        address: '125 High Street, Reading, RG6 1PS',
-        rating: 2,
-        facilities: ['Food', 'Premium wifi'],
-        distance: '250m'
-}]
+      locations: responseBody,
+      sidebar: "Looking for wifi and a seat? LocatoR helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let LocatoR help you find the place you're looking for."
     }
+    
+    
+
+  });
+};
+/*GET 'home' page*/
+
+module.exports.homelist = function (req, res) {
+  var requestOptions, path;
+  path = '/api/locations';
+  requestOptions = {
+    url: apiOptions.server + path,
+    method: "GET",
+    json: {},
+    qs: {
+      lng: -1.7703437000000122,
+      lat: 53.674278799999996,
+      maxdist: 20
+    }
+
+  };
+
+  request(requestOptions, function (err, response, body) {
+    renderHomepage(req, res, body);
   });
 };
 
