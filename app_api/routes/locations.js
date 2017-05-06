@@ -15,6 +15,8 @@ router.put('/locations/:locationid', ctrlLocations.locationsUpdateOne);
 router.delete('/locations/:locationid', ctrlLocations.locationsDeleteOne);
 
 
+
+
 //reviews
 router.post('/locations/:locationid/reviews', ctrlReviews.reviewsCreate);
 

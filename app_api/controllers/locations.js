@@ -47,7 +47,7 @@ module.exports.locationListByDistance = function (req, res) {
     num: 10
   };
 
-  if (!lng || !lat) {
+  if ((!lng && lng!==0) || (!lat && lat!==0)) {
     sendJsonResponse(res, 404, {
       "message": "lng and lat query parameters are required"
     });
@@ -61,7 +61,7 @@ module.exports.locationListByDistance = function (req, res) {
     } else {
       results.forEach(function (doc) {
         locations.push({
-          distance: doc.dis,//distance in meteres, not in rad
+          distance: doc.dis/1000,//distance in meteres, not in rad
 //          distance: theEarth.getDistanceFromRads(doc.dis),
           name: doc.obj.name,
           address: doc.obj.address,
