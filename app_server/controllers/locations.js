@@ -6,6 +6,33 @@ if (process.env.NODE_ENV === 'production') {
   apiOptions.server = "https://ancient-reaches-88437.herokuapp.com/";
 }
 
+/*General utility function to hit the api and get a single location data*/
+var getLocationInfo = function(req, res, callback){
+  var requestOptions, path;
+  path = "/api/locations/" + req.params.locationid;
+
+
+  requestOptions = {
+    url: apiOptions.server + path,
+    method: "GET",
+    json: {}
+  };
+
+  request(requestOptions, function (err, response, body) {
+
+    var data = body;
+    if (response.statusCode === 200) {
+      data.coords = {
+        lng: body.coords[0],
+        lat: body.coords[1]
+      };
+      callback(req, res, data);
+    } else {
+      _showError(req, res, response.statusCode);
+    }
+  });
+};
+
 var renderHomepage = function (req, res, responseBody) {
   var message;
   if (!(responseBody instanceof Array)) {
@@ -28,6 +55,9 @@ var renderHomepage = function (req, res, responseBody) {
 
   });
 };
+
+
+
 
 
 /*GET 'home' page*/
@@ -73,7 +103,6 @@ var _formatDistance = function (distance) {
 
 /* GET 'Location info' page */
 var renderDetailPage = function (req, res, locDetail) {
-  console.log("locDetail.coords is: ", locDetail.coords);
   res.render('location-info', {
     location: locDetail,
     title: locDetail.name,
@@ -83,53 +112,77 @@ var renderDetailPage = function (req, res, locDetail) {
     },
 
     pageHeader: {
-      
+
       title: locDetail.name
 
     }
-    
+
+  });
+};
+
+var _showError = function (req, res, status) {
+  var title, content;
+  if (status === 404) {
+    title = "404, page not found";
+    content = "Oh dear. Looks like we can't find this page. Sorry.";
+  } else {
+    title = status + ", something's gone wrong";
+    content = "Something, somewhere, has gone just a little bit wrong.";
+  }
+  res.status(status);
+  res.render('generic-text', {
+    title: title,
+    content: content
   });
 };
 module.exports.locationInfo = function (req, res) {
-  var requestOptions, path;
-  path = "/api/locations/" + req.params.locationid;
-  console.log("************************************************");
-  console.log("req.params.locationid is:------->>>>> " + req.params.locationid);
-  console.log("************************************************");
-
-  requestOptions = {
-    url: apiOptions.server + path,
-    method: "GET",
-    json: {}
-  };
-
-  request(requestOptions, function (err, response, body) {
-
-    var data = body;
-    data.coords = {
-      lng: body.coords[0],
-      lat: body.coords[1]
-    };
-    renderDetailPage(req, res, data);
-    console.log("---------------*******-------------------");
-
-    console.log("response is --->>>>>> " + response + '\n');
-    console.log("body is --->>>>>> " + body + '\n');
-    //    for (a in body)
-    //      console.log("property in body is: ", a);
-    //    for (a in response)
-    //      console.log("property in response is: ", a);
-    console.log("body.coords is: ", body.coords);
-
-    console.log("---------------*******-------------------");
-
-
-  });
+ getLocationInfo(req, res, function(req, res, responseData){
+   renderDetailPage(req, res, responseData);
+ });
 };
 
 /*GET 'Add review' page*/
-module.exports.addReview = function (req, res) {
+var renderReviewForm = function(req, res, locDetail){
   res.render('location-review-form', {
-    title: 'Add review'
+    title: 'Review ' + locDetail.name + ' on LocatoR',
+    location: locDetail,
+    pageHeader: {
+      title: 'Review ' + locDetail.name
+    }
   });
+};
+module.exports.addReview = function (req, res) {
+
+ getLocationInfo(req, res, function(req, res, responseData){
+   renderReviewForm(req, res, responseData);
+ });
+};
+
+
+/*POST */
+module.exports.doAddReview = function(req, res){
+  var requestOptions, path, locationid, postdata;
+  locationid = req.params.locationid;
+  path = "/api/locations/" + locationid + '/reviews';
+  postdata = {
+    author: req.body.name,
+    rating: parseInt(req.body.rating, 10),
+    reviewText: req.body.review
+  };
+  
+  requestOptions = {
+    url: apiOptions.server + path,
+    method: "POST",
+    json: postdata
+  };
+  
+  request(
+  requestOptions, function(err, response, body){
+    if(response.statusCode === 201){
+      res.redirect('/location/' + locationid);
+    } else {
+      _showError(req, res, response.statusCode);
+    }
+  }
+  );
 };
