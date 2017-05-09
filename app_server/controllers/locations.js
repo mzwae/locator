@@ -56,10 +56,6 @@ var renderHomepage = function (req, res, responseBody) {
   });
 };
 
-
-
-
-
 /*GET 'home' page*/
 module.exports.homelist = function (req, res) {
   var requestOptions, path;
@@ -146,6 +142,7 @@ var renderReviewForm = function(req, res, locDetail){
   res.render('location-review-form', {
     title: 'Review ' + locDetail.name + ' on LocatoR',
     location: locDetail,
+    error: req.query.err,
     pageHeader: {
       title: 'Review ' + locDetail.name
     }
@@ -175,14 +172,20 @@ module.exports.doAddReview = function(req, res){
     method: "POST",
     json: postdata
   };
-  
+  if (!postdata.author || !postdata.rating || !postdata.reviewText) {
+res.redirect('/location/' + locationid + '/reviews/new?err=val');
+} else {
   request(
   requestOptions, function(err, response, body){
     if(response.statusCode === 201){
       res.redirect('/location/' + locationid);
+    } else if (response.statusCode === 400 && body.name && body.name === "ValidationError"){
+      res.redirect('/location/' + locationid + '/reviews/new?err=val');
     } else {
+      console.log("body>>>>>>>>>>>>>>",body);
       _showError(req, res, response.statusCode);
     }
   }
   );
+}
 };

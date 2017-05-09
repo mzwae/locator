@@ -31,6 +31,7 @@ var sendJsonResponse = function (res, status, content) {
   res.json(content);
 
 };
+
 module.exports.locationListByDistance = function (req, res) {
 //  console.log(Loc.find());
   var lng = parseFloat(req.query.lng);
