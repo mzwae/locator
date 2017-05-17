@@ -26,3 +26,7 @@ a {
 .reviewTimestamp {
     color: #ccc;
 }
+
+#filter {
+  margin: 4px;
+}

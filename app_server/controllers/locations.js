@@ -33,32 +33,35 @@ var getLocationInfo = function(req, res, callback){
   });
 };
 
-var renderHomepage = function (req, res, responseBody) {
-  var message;
-  if (!(responseBody instanceof Array)) {
-    message = "API lookup error";
-    responseBody = [];
-  } else {
-    if (!responseBody.length) {
-      message = "No places found nearby";
-    }
-  }
+var renderHomepage = function (req, res) {
+//  var message;
+//  if (!(responseBody instanceof Array)) {
+//    message = "API lookup error";
+//    responseBody = [];
+//  } else {
+//    if (!responseBody.length) {
+//      message = "No places found nearby";
+//    }
+//  }
   res.render('locations-list', {
     title: 'LocatoR - find a place to work with fast wifi',
     pageHeader: {
       title: 'LocatoR',
-      strapline: 'Find places to work with fast wifi near you!',
-      locations: responseBody,
-      sidebar: "Looking for wifi and a seat? LocatoR helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let LocatoR help you find the place you're looking for.",
-      message: message
-    }
+      strapline: 'Find places to work with fast wifi near you!'
+//      locations: responseBody,
+      
+//      message: message
+    },
+    sidebar: "Looking for wifi and a seat? LocatoR helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let LocatoR help you find the place you're looking for."
 
   });
 };
 
 /*GET 'home' page*/
 module.exports.homelist = function (req, res) {
-  var requestOptions, path;
+  renderHomepage(req, res);
+  
+ /* var requestOptions, path;
   path = '/api/locations';
   requestOptions = {
     url: apiOptions.server + path,
@@ -82,10 +85,11 @@ module.exports.homelist = function (req, res) {
     }
     renderHomepage(req, res, body);
   });
+  */
 };
 
 //Utility function to format the output distance into km or m
-var _formatDistance = function (distance) {
+/*var _formatDistance = function (distance) {
   var numDistance, unit;
   if (distance > 1) {
     numDistance = parseFloat(distance).toFixed(1);
@@ -95,7 +99,7 @@ var _formatDistance = function (distance) {
     unit = 'm';
   }
   return numDistance + unit;
-};
+};*/
 
 /* GET 'Location info' page */
 var renderDetailPage = function (req, res, locDetail) {
@@ -143,6 +147,7 @@ var renderReviewForm = function(req, res, locDetail){
     title: 'Review ' + locDetail.name + ' on LocatoR',
     location: locDetail,
     error: req.query.err,
+    url: req.originalUrl,
     pageHeader: {
       title: 'Review ' + locDetail.name
     }
