@@ -1,17 +1,29 @@
-angular.module('locatorApp', ['ngRoute']);
+(function () {
+  angular.module('locatorApp', ['ngRoute', 'ngSanitize']);
 
-function config($routeProvider){
-  
-  $routeProvider
-    .when('/', {
-    templateUrl: 'home/home.view.html',
-    controller: 'homeCtrl', 
-    controllerAs: 'vm'
-  })
-    .otherwise({redirectTo: '/'});
-}
+  function config($routeProvider, $locationProvider) {
+
+    $routeProvider
+      .when('/', {
+        templateUrl: 'home/home.view.html',
+        controller: 'homeCtrl',
+        controllerAs: 'vm'
+      })
+      .when('/about', {
+      templateUrl: '/common/views/genericText.view.html',
+      controller: 'aboutCtrl',
+      controllerAs: 'vm'
+    })
+      .otherwise({
+        redirectTo: '/'
+      });
+    
+    $locationProvider.html5Mode(true);
+  }
 
 
-angular
-  .module('locatorApp')
-  .config(['$routeProvider', config]);
+  angular
+    .module('locatorApp')
+    .config(['$routeProvider', '$locationProvider', config]);
+
+})();

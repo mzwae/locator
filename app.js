@@ -15,18 +15,31 @@ var users = require('./app_server/routes/users');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'app_server', 'views'));
-app.set('view engine', 'jade');
+//app.set('views', path.join(__dirname, 'app_server', 'views'));
+
+//app.set('view engine', 'jade');
+
+//Angular routing the home page
+app.set('views', path.join(__dirname, 'app_client', 'index.html'));
+//require('./app_api/routes')(app);
+//app.use(function(req, res){
+//  res.sendFile(path.join(__dirname, 'app_client', 'index.html'));
+//});
 
 //uglifyJs code
 /* Step1: define array of files to uglify */
 var appClientFiles = [
 'app_client/app.js',
 'app_client/home/home.controller.js',
+'app_client/about/about.controller.js',
 'app_client/common/services/geolocation.service.js',
 'app_client/common/services/locatorData.service.js',
 'app_client/common/filters/formatDistance.filter.js',
-'app_client/common/directives/ratingStars/ratingStars.directive.js'   
+'app_client/common/filters/addHtmlLineBreaks.filter.js',
+'app_client/common/directives/ratingStars/ratingStars.directive.js',   
+'app_client/common/directives/footerGeneric/footerGeneric.directive.js',   
+'app_client/common/directives/navigation/navigation.directive.js',   
+'app_client/common/directives/pageHeader/pageHeader.directive.js'   
 ];
 
 /* Step2: Run uglifyJs.minify process on array of files*/
