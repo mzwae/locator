@@ -187,7 +187,6 @@ res.redirect('/location/' + locationid + '/reviews/new?err=val');
     } else if (response.statusCode === 400 && body.name && body.name === "ValidationError"){
       res.redirect('/location/' + locationid + '/reviews/new?err=val');
     } else {
-      console.log("body>>>>>>>>>>>>>>",body);
       _showError(req, res, response.statusCode);
     }
   }

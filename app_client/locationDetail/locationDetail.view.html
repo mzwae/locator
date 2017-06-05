@@ -53,8 +53,8 @@ facility in vm.data.location.facilities">
       <div class="row">
         <div class="col-xs-12">
           <div class="panel panel-primary review-panel">
-            <div class="panel-heading"><a href="" class="btn btn-default pullright">
-Add review</a>
+            <div class="panel-heading">
+              <a ng-click="vm.popupReviewForm()" class="btn btn-default pullright">Add review</a>
               <h2 class="panel-title">Customer reviews</h2>
             </div>
             <div class="panel-body review-container">
@@ -68,6 +68,7 @@ vm.data.location.reviews | orderBy:'timestamp':true">
                   </div>
                   <div class="col-xs-12">
                     <p ng-bind-html="review.reviewText | addHtmlLineBreaks"></p>
+                    
                   </div>
                 </div>
               </div>

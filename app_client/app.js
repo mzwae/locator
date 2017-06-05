@@ -1,5 +1,5 @@
 (function () {
-  angular.module('locatorApp', ['ngRoute', 'ngSanitize']);
+  angular.module('locatorApp', ['ngRoute', 'ngSanitize', 'ui.bootstrap']);
 
   function config($routeProvider, $locationProvider) {
 
@@ -10,20 +10,23 @@
         controllerAs: 'vm'
       })
       .when('/about', {
-      templateUrl: '/common/views/genericText.view.html',
-      controller: 'aboutCtrl',
-      controllerAs: 'vm'
-    })
+        templateUrl: '/common/views/genericText.view.html',
+        controller: 'aboutCtrl',
+        controllerAs: 'vm'
+      })
       .when('/location/:locationid', {
-      templateUrl: '/locationDetail/locationDetail.view.html',
-      controller: 'locationDetailCtrl',
-      controllerAs: 'vm'
-    })
+        templateUrl: '/locationDetail/locationDetail.view.html',
+        controller: 'locationDetailCtrl',
+        controllerAs: 'vm'
+      })
       .otherwise({
         redirectTo: '/'
       });
-    
-    $locationProvider.html5Mode(true);
+
+    $locationProvider.html5Mode({
+      enabled: true,
+      requireBase: false
+    });
   }
 
 

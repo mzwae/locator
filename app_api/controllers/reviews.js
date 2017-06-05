@@ -47,14 +47,15 @@ var doAddReview = function(req, res, location){
     location.save(function(err, location){
       var thisReview; 
       if (err){
-        console.log("err >>>>>>>>>>>>>> ",err);
+        console.log("err >>>>>>>>>>>>>> ", err);
         sendJsonResponse(res, 400, err);
       } else {
         updateAverageRating(location._id);
-        this.Review = location.reviews[location.reviews.length - 1];
+        thisReview = location.reviews[location.reviews.length - 1];
         sendJsonResponse(res, 201, thisReview);
       }
     });
+    
   }
 };
 //reviewsCreate: updateAverageRating utility function
