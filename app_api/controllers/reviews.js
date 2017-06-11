@@ -12,8 +12,8 @@ var sendJsonResponse = function (res, status, content) {
 /* POST a new review, providing a locationid */
 /* /api/locations/:locationid/reviews */
 module.exports.reviewsCreate = function (req, res) {
+  getAuth(req, res, function (req, res, userName) {
 
-  getAuthor(req, res, function (req, res, userName) {
     var locationid = req.params.locationid;
     if (locationid) {
       Loc
@@ -55,6 +55,7 @@ var getAuth = function (req, res, callback) {
           sendJSONresponse(res, 404, err);
           return;
         }
+      
         callback(req, res, user.name);
       });
   } else {

@@ -45,9 +45,12 @@ var appClientFiles = [
 'app_client/common/directives/ratingStars/ratingStars.directive.js',   
 'app_client/common/directives/footerGeneric/footerGeneric.directive.js',   
 'app_client/common/directives/navigation/navigation.directive.js',   
+'app_client/common/directives/navigation/navigation.controller.js',   
 'app_client/common/directives/pageHeader/pageHeader.directive.js',   
 'app_client/locationDetail/locationDetail.controller.js',
-'app_client/reviewModal/reviewModal.controller.js'
+'app_client/reviewModal/reviewModal.controller.js',
+'app_client/auth/register/register.controller.js',
+'app_client/auth/login/login.controller.js'
 ];
 
 /* Step2: Run uglifyJs.minify process on array of files*/

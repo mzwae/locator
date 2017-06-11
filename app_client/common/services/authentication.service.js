@@ -3,9 +3,9 @@
     .module('locatorApp')
     .service('authentication', authentication);
 
-  authentication.$inject = ['$window'];
+  authentication.$inject = ['$window', '$http'];
 
-  function authentication($window) {
+  function authentication($window, $http) {
 
     var saveToken = function (token) {
       $window.localStorage['locator-token'] = token;
@@ -16,17 +16,13 @@
     };
 
     var register = function (user) {
-      return $http
-        .post('/api/register', user)
-        .success(function (data) {
+      return $http.post('/api/register', user).success(function (data) {
           saveToken(data.token);
         });
     };
 
     var login = function (user) {
-      return $http
-        .post('/api/login', user)
-        .success(function (data) {
+      return $http.post('/api/login', user).success(function (data) {
           saveToken(data.token);
         });
     };

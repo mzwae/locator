@@ -4,9 +4,9 @@
     .controller('locationDetailCtrl', locationDetailCtrl);
 
   /*Inject $routeParams service into controller to protect from minification*/
-  locationDetailCtrl.$inject = ['$routeParams', 'locatorData', '$modal'];
+  locationDetailCtrl.$inject = ['$routeParams', 'locatorData', '$modal', 'authentication', '$location'];
 
-  function locationDetailCtrl($routeParams, locatorData, $modal) {
+  function locationDetailCtrl($routeParams, locatorData, $modal, authentication, $location) {
     var vm = this;
     vm.locationid = $routeParams.locationid;
 
@@ -43,6 +43,13 @@
         vm.data.location.reviews.push(data);
       });
     };
+    
+    
+    //to get current visitor state
+    vm.isLoggedIn = authentication.isLoggedIn();
+    
+    //to get the current url path of the user
+    vm.currentPath = $location.path();
 
   }
   

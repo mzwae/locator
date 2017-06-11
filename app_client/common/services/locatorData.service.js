@@ -1,7 +1,7 @@
 (function () {
   /*Data service for pulling data from the API*/
-  locatorData.$inject = ['$http'];
-  function locatorData($http) {
+  locatorData.$inject = ['$http', 'authentication'];
+  function locatorData($http, authentication) {
     var locationByCoords = function (lat, lng) {
       return $http.get('/api/locations?lng=' + lng + '&lat=' + lat + '&maxdist=20');
     };
@@ -12,7 +12,12 @@
     };
     
     var addReviewById = function(locationid, data){
-      return $http.post('/api/locations/' + locationid + '/reviews', data);
+      console.log("data is: ", data);
+      return $http.post('/api/locations/' + locationid + '/reviews', data, {
+        headers: {
+          Authorization: 'Bearer ' + authentication.getToken()
+        }
+      });
     };
     return {
       locationByCoords: locationByCoords,
