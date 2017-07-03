@@ -3,7 +3,7 @@ var apiOptions = {
   server: "http://localhost:3000"
 };
 if (process.env.NODE_ENV === 'production') {
-  apiOptions.server = "https://ancient-reaches-88437.herokuapp.com";
+  apiOptions.server = "https://mzapps-locator.herokuapp.com";
 }
 
 /*General utility function to hit the api and get a single location data*/
