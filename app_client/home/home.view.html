@@ -4,7 +4,9 @@
   <div class="row">
     <div class="col-xs-12 col-sm-8">
       <label for="filter">Filter results</label>
-      <input id="filter" type="text" , name="filter" , ng-model="textFilter">
+      <input id="filter" type="text" name="filter" ng-model="textFilter">
+     <!-- <label>Type Distance (in Km)</label>
+      <input type="text" ng-model="vm.maxdist" placeholder="e.g. 20">-->
       <div class="error">{{vm.message}}</div>
       <div class="row list-group">
         <div class="col-xs-12 list-group-item" ng-repeat="location in vm.data.locations | filter : textFilter">

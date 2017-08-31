@@ -4,6 +4,7 @@
     .controller('homeCtrl', homeCtrl);
 
   homeCtrl.$inject = ['$scope', 'locatorData', 'geolocation'];
+
   function homeCtrl($scope, locatorData, geolocation) {
     var vm = this;
     vm.pageHeader = {
@@ -20,7 +21,9 @@
         lng = position.coords.longitude;
       vm.message = "Searching for nearby places";
       vm.working = true;
-      locatorData.locationByCoords(lat, lng)
+//      vm.maxdist = 20;
+      locatorData
+        .locationByCoords(lat, lng, vm.maxdist)
         .success(function (data) {
           vm.working = false;
           vm.message = data.length > 0 ? "" : "No locations found";

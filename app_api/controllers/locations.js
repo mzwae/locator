@@ -1,4 +1,3 @@
-
 var mongoose = require('mongoose');
 var Loc = mongoose.model('Location');
 
@@ -6,23 +5,23 @@ var Loc = mongoose.model('Location');
 // Use native promises because mongoose mpromise has been deprecated
 mongoose.Promise = global.Promise;
 
-var theEarth = (function(){
-  
+var theEarth = (function () {
+
   var earthRadius = 6371; // km, miles is 3959
-  
-  var getDistanceFromRads = function(rads){
+
+  var getDistanceFromRads = function (rads) {
     return parseFloat(rads * earthRadius);
   };
-  
-  var getRadsFromDistance = function(distance){
+
+  var getRadsFromDistance = function (distance) {
     return parseFloat(distance / earthRadius);
   };
-  
+
   return {
     getDistanceFromRads: getDistanceFromRads,
     getRadsFromDistance: getRadsFromDistance
   };
-  
+
 })();
 
 var sendJsonResponse = function (res, status, content) {
@@ -33,22 +32,20 @@ var sendJsonResponse = function (res, status, content) {
 };
 
 module.exports.locationListByDistance = function (req, res) {
-//  console.log(Loc.find());
   var lng = parseFloat(req.query.lng);
   var lat = parseFloat(req.query.lat);
-  var maxdist = parseFloat(req.query.maxdist);//max distance in kilometers
+  var maxdist = parseFloat(req.query.maxdist); //max distance in kilometers
   var point = {
     type: "Point",
     coordinates: [lng, lat]
   };
   var geoOptions = {
     spherical: true,
-    maxDistance: maxdist * 1000,//for type Point, distance should be in meters not in radians
-//    maxDistance: theEarth.getRadsFromDistance(20),
+    maxDistance: maxdist * 1000, //for type Point, distance should be in meters not in radians
     num: 10
   };
 
-  if ((!lng && lng!==0) || (!lat && lat!==0)) {
+  if ((!lng && lng !== 0) || (!lat && lat !== 0)) {
     sendJsonResponse(res, 404, {
       "message": "lng and lat query parameters are required"
     });
@@ -62,18 +59,17 @@ module.exports.locationListByDistance = function (req, res) {
     } else {
       results.forEach(function (doc) {
         locations.push({
-          distance: doc.dis/1000,//distance in meteres, not in rad
-//          distance: theEarth.getDistanceFromRads(doc.dis),
+          distance: doc.dis / 1000, //distance in meteres, not in rad
           name: doc.obj.name,
           address: doc.obj.address,
           rating: doc.obj.rating,
           facilities: doc.obj.facilities,
           _id: doc.obj._id
-       
+
         });
-     
+
       });
-       
+
       sendJsonResponse(res, 200, locations);
     }
   });
@@ -81,8 +77,7 @@ module.exports.locationListByDistance = function (req, res) {
 }
 
 
-module.exports.locationsCreate = function(req, res) {
-  console.log(req.body);
+module.exports.locationsCreate = function (req, res) {
   Loc.create({
     name: req.body.name,
     address: req.body.address,
@@ -99,12 +94,11 @@ module.exports.locationsCreate = function(req, res) {
       closing: req.body.closing2,
       closed: req.body.closed2,
     }]
-  }, function(err, location) {
+  }, function (err, location) {
     if (err) {
       console.log(err);
       sendJsonResponse(res, 400, err);
     } else {
-      console.log(location);
       sendJsonResponse(res, 201, location);
     }
   });
@@ -115,14 +109,12 @@ module.exports.locationsReadOne = function (req, res) {
   if (req.params && req.params.locationid) {
     Loc
       .findById(req.params.locationid)
-      //.select('name reviews')
       .exec(function (err, location) {
         if (!location) {
           sendJsonResponse(res, 404, {
             "message": "locationid not found"
 
           });
-          console.log("locationid used is: " + req.params.locationid);
 
           return;
         } else if (err) {
@@ -139,18 +131,17 @@ module.exports.locationsReadOne = function (req, res) {
 };
 
 module.exports.locationsUpdateOne = function (req, res) {
-  console.log("locationid is : ", req.params.locationid);
   if (!req.params.locationid) {
     sendJsonResponse(res, 404, {
       "message": "Not found, locationid is required"
     });
-    
+
     return;
   }
 
   Loc
     .findById(req.params.locationid)
-    .select('-reviews -rating')//'-' means retrieve everything EXCEPT reviews and rating
+    .select('-reviews -rating') //'-' means retrieve everything EXCEPT reviews and rating
     .exec(function (err, location) {
       if (!location) {
         sendJsonResponse(res, 404, {
@@ -187,27 +178,23 @@ module.exports.locationsUpdateOne = function (req, res) {
 };
 
 
-//router.delete('locations/:locationid', ctrlLocations.locationsDeleteOne);
 module.exports.locationsDeleteOne = function (req, res) {
-   console.log("Delete controller activated!");
 
- var locationid = req.params.locationid;
- console.log("locationid is: ", locationid);
-  if (locationid){
-    console.log("locationid is : ", locationid);
+  var locationid = req.params.locationid;
+  if (locationid) {
     Loc
-    .findByIdAndRemove(locationid)
-    .exec(
-    function(err, location){
-      if (err){
-        console.log("error in deleting the document: ", locationid);
-        sendJsonResponse(res, 404, err);
-        return;
-      }
-      
-      sendJsonResponse(res, 204, null);
-    }
-    );
+      .findByIdAndRemove(locationid)
+      .exec(
+        function (err, location) {
+          if (err) {
+            console.log("error in deleting the document: ", locationid);
+            sendJsonResponse(res, 404, err);
+            return;
+          }
+
+          sendJsonResponse(res, 204, null);
+        }
+      );
   } else {
     sendJsonResponse(res, 404, {
       "message": "No loctionid"

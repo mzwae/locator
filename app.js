@@ -19,17 +19,9 @@ var users = require('./app_server/routes/users');
 
 var app = express();
 
-// view engine setup
-//app.set('views', path.join(__dirname, 'app_server', 'views'));
-
-//app.set('view engine', 'jade');
-
 //Angular routing the home page
 app.set('views', path.join(__dirname, 'app_client', 'index.html'));
-//require('./app_api/routes')(app);
-//app.use(function(req, res){
-//  res.sendFile(path.join(__dirname, 'app_client', 'index.html'));
-//});
+
 
 //uglifyJs code
 /* Step1: define array of files to uglify */
@@ -54,7 +46,6 @@ var appClientFiles = [
 ];
 
 /* Step2: Run uglifyJs.minify process on array of files*/
-//var uglified = uglifyJs.minify(appClientFiles, {compress: false});
 var filesContents = appClientFiles.map(function (file) {
     return fs.readFileSync(file, 'utf8');
 });

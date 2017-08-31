@@ -2,8 +2,8 @@
   /*Data service for pulling data from the API*/
   locatorData.$inject = ['$http', 'authentication'];
   function locatorData($http, authentication) {
-    var locationByCoords = function (lat, lng) {
-      return $http.get('/api/locations?lng=' + lng + '&lat=' + lat + '&maxdist=20');
+    var locationByCoords = function (lat, lng, maxdist) {
+      return $http.get('/api/locations?lng=' + lng + '&lat=' + lat + '&maxdist=' + '200');
     };
 
     
