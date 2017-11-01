@@ -13,9 +13,9 @@ var passport = require('passport');
 require('./app_api/models/db');
 require('./app_api/config/passport');
 
-var routes = require('./app_server/routes/index');
+//var routes = require('./app_server/routes/index');
 var routesApi = require('./app_api/routes/index');
-var users = require('./app_server/routes/users');
+//var users = require('./app_server/routes/users');
 
 var app = express();
 
@@ -72,9 +72,9 @@ app.use(express.static(path.join(__dirname, 'app_client')));
 
 app.use(passport.initialize());
 
-app.use('/', routes);
+//app.use('/', routes);
 app.use('/api', routesApi);
-app.use('/users', users);
+//app.use('/users', users);
 
 //Error handler
 //Catch unauthorized errors
