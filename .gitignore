@@ -1,2 +1,6 @@
 # Environment variables
 .env
+
+# Node and related ecosystem
+# ==========================
+node_modules/
