@@ -13,7 +13,8 @@
     locatorData.locationById(vm.locationid)
       .success(function (data) {
         vm.data = {
-          location: data
+          location: data.location,
+          key: data.key
         };
         vm.pageHeader = {
           title: vm.data.location.name

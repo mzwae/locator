@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Loc = mongoose.model('Location');
-
+var GoogleKey = process.env.G_APIKEY;
 
 // Use native promises because mongoose mpromise has been deprecated
 mongoose.Promise = global.Promise;
@@ -121,7 +121,10 @@ module.exports.locationsReadOne = function (req, res) {
           sendJsonResponse(res, 404, err);
           return;
         }
-        sendJsonResponse(res, 200, location);
+        sendJsonResponse(res, 200, {
+          location: location,
+          key: GoogleKey
+        });
       });
   } else {
     sendJsonResponse(res, 404, {
