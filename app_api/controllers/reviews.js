@@ -55,7 +55,7 @@ var getAuth = function (req, res, callback) {
           sendJSONresponse(res, 404, err);
           return;
         }
-      
+
         callback(req, res, user.name);
       });
   } else {
