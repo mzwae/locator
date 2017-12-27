@@ -23,36 +23,36 @@
       .error(function (e) {
         console.log(e);
       });
-    
-    vm.popupReviewForm = function(){
-     var modalInstance = $modal.open({
-       templateUrl: '/reviewModal/reviewModal.view.html',
-       controller: 'reviewModalCtrl as vm',
-       resolve: {//passing data object to reviewModal controller
-         locationData: function(){
-           return {
-             locationid: vm.locationid,
-             locationName: vm.data.location.name
-           }
-         }
-       }
-     });
-      
-      modalInstance.result.then(function(data){//when modal promise is resolved
-        
+
+    vm.popupReviewForm = function () {
+      var modalInstance = $modal.open({
+        templateUrl: '/reviewModal/reviewModal.view.html',
+        controller: 'reviewModalCtrl as vm',
+        resolve: { //passing data object to reviewModal controller
+          locationData: function () {
+            return {
+              locationid: vm.locationid,
+              locationName: vm.data.location.name
+            }
+          }
+        }
+      });
+
+      modalInstance.result.then(function (data) { //when modal promise is resolved
+
         /*push returned data into array of reviews, Angular binding will do the rest*/
         vm.data.location.reviews.push(data);
       });
     };
-    
-    
+
+
     //to get current visitor state
     vm.isLoggedIn = authentication.isLoggedIn();
-    
+
     //to get the current url path of the user
     vm.currentPath = $location.path();
 
   }
-  
-  
+
+
 })();

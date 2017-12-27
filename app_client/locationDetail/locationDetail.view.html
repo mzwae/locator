@@ -21,8 +21,9 @@
                 <p ng-repeat="time in vm.data.location.openingTimes" ng-switch on="time.closed">
                   {{ time.days }} :
                   <span class="opening-time" ng-switch-when="true">closed</span>
-                  <span class="opening-time" ng-switch-default>{{ time.opening + " - " +
-time.closing }}</span>
+                  <span class="opening-time" ng-switch-default>
+                    {{ time.opening + " - " + time.closing }}
+                  </span>
                 </p>
               </div>
             </div>
@@ -69,7 +70,7 @@ vm.data.location.reviews | orderBy:'timestamp':true">
                   </div>
                   <div class="col-xs-12">
                     <p ng-bind-html="review.reviewText | addHtmlLineBreaks"></p>
-                    
+
                   </div>
                 </div>
               </div>
